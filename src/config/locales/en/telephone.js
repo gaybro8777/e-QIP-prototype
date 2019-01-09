@@ -28,7 +28,7 @@ export const telephone = {
     both: 'Both'
   },
   numberType: {
-    title: 'Select phone number type',
+    title: 'Phone type',
     cell: 'Cell',
     home: 'Home',
     work: 'Work',

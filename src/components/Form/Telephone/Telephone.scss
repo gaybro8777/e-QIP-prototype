@@ -2,12 +2,36 @@
   display: inline-block;
 
   .telephone-number-fields {
-    display: table-row;
+    display: inline-block;
+
+    @media all and (max-width: 980px) {
+      margin-bottom: 1rem;
+    }
   }
 
   .numbers {
+    display: inline-block;
+    margin-right: 2rem;
+
     > label {
       font-weight: bold;
+
+      @media all and (max-width: 980px) {
+        margin-bottom: 3rem;
+      }
+    }
+
+    @media all and (max-width: 980px) {
+      display: block;
+      margin: 0;
+    }
+  }
+
+  .phone-na {
+    display: inline-block;
+
+    @media all and (max-width: 980px) {
+      display: block;
     }
   }
 
@@ -76,19 +100,24 @@
     }
   }
 
-  .timeofday {
-    margin-bottom: 2rem;
-    margin-left: 1.5rem;
-    z-index: 1;
+  .phonetype {
+    display: inline-block;
+    float: right;
 
-    .time {
-      display: inline-block;
-      margin-right: 2rem;
+    @media all and (max-width: 980px) {
+      display: block;
+      float: none;
+      margin-top: 2rem;
     }
   }
 
-  .phonetype-option.block label {
-    height: auto !important;
-    width: 8.7rem !important;
+  .timeofday .block {
+    @media all and (max-width: 980px) {
+      display: block;
+    }
+  }
+
+  .timeofday {
+    margin-top: 3rem;
   }
 }

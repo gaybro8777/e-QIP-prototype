@@ -437,6 +437,8 @@ export default class Telephone extends ValidationElement {
               this.props.tab(this.refs.dsn_first.refs.text.refs.input)
             }}
           />
+        </div>
+        <span className="phone-na">
           <span
             className={
               this.props.allowNotApplicable ? 'separator extension' : 'hidden'
@@ -452,7 +454,7 @@ export default class Telephone extends ValidationElement {
             onUpdate={this.updateNoNumber}
             onError={this.handleErrorNoNumber}
           />
-        </div>
+        </span>
       </div>
     )
   }
@@ -557,6 +559,8 @@ export default class Telephone extends ValidationElement {
               this.props.tab(this.refs.domestic_third.refs.text.refs.input)
             }}
           />
+        </div>
+        <span className="phone-na">
           <span
             className={
               this.props.allowNotApplicable ? 'separator extension' : 'hidden'
@@ -572,7 +576,7 @@ export default class Telephone extends ValidationElement {
             onUpdate={this.updateNoNumber}
             onError={this.handleErrorNoNumber}
           />
-        </div>
+        </span>
       </div>
     )
   }
@@ -589,84 +593,88 @@ export default class Telephone extends ValidationElement {
             .trim()}>
           {i18n.t('telephone.international.label')}
         </label>
-        <span className="separator">+</span>
-        <Text
-          name="int_first"
-          ref="int_first"
-          className="number three"
-          label=""
-          ariaLabel={i18n.t('telephone.aria.countryCode')}
-          disabled={this.props.noNumber}
-          maxlength="3"
-          pattern="\d{1,3}"
-          prefilter={digitsOnly}
-          readonly={this.props.readonly}
-          required={this.required('International')}
-          value={trimleading(this.state.international.first)}
-          onUpdate={this.updateInternationalFirst}
-          onError={this.handleErrorInternationalFirst}
-          tabNext={() => {
-            this.props.tab(this.refs.int_second.refs.text.refs.input)
-          }}
-        />
-        <span className="separator">-</span>
-        <Text
-          name="int_second"
-          ref="int_second"
-          className="number ten"
-          label=""
-          ariaLabel={i18n.t('telephone.aria.phoneNumber')}
-          disabled={this.props.noNumber}
-          maxlength="10"
-          pattern="\d{10}"
-          prefilter={digitsOnly}
-          readonly={this.props.readonly}
-          required={this.required('International')}
-          value={trimleading(this.state.international.second)}
-          onUpdate={this.updateInternationalSecond}
-          onError={this.handleErrorInternationalSecond}
-          tabBack={() => {
-            this.props.tab(this.refs.int_first.refs.text.refs.input)
-          }}
-          tabNext={() => {
-            this.props.tab(this.refs.int_extension.refs.text.refs.input)
-          }}
-        />
-        <span className="separator pound">#</span>
-        <Text
-          name="int_extension"
-          ref="int_extension"
-          className="number six"
-          label={i18n.t('telephone.international.extension.label')}
-          ariaLabel={i18n.t('telephone.aria.extension')}
-          disabled={this.props.noNumber}
-          maxlength="10"
-          pattern="^\d{0,10}$"
-          prefilter={digitsOnly}
-          readonly={this.props.readonly}
-          required={false}
-          value={this.props.extension}
-          onUpdate={this.updateExtension}
-          onError={this.handleErrorInternationalExtension}
-          tabBack={() => {
-            this.props.tab(this.refs.int_second.refs.text.refs.input)
-          }}
-        />
-        <span
-          className={
-            this.props.allowNotApplicable ? 'separator extension' : 'hidden'
-          }>
-          or
+        <div className="telephone-number-fields">
+          <span className="separator">+</span>
+          <Text
+            name="int_first"
+            ref="int_first"
+            className="number three"
+            label=""
+            ariaLabel={i18n.t('telephone.aria.countryCode')}
+            disabled={this.props.noNumber}
+            maxlength="3"
+            pattern="\d{1,3}"
+            prefilter={digitsOnly}
+            readonly={this.props.readonly}
+            required={this.required('International')}
+            value={trimleading(this.state.international.first)}
+            onUpdate={this.updateInternationalFirst}
+            onError={this.handleErrorInternationalFirst}
+            tabNext={() => {
+              this.props.tab(this.refs.int_second.refs.text.refs.input)
+            }}
+          />
+          <span className="separator">-</span>
+          <Text
+            name="int_second"
+            ref="int_second"
+            className="number ten"
+            label=""
+            ariaLabel={i18n.t('telephone.aria.phoneNumber')}
+            disabled={this.props.noNumber}
+            maxlength="10"
+            pattern="\d{10}"
+            prefilter={digitsOnly}
+            readonly={this.props.readonly}
+            required={this.required('International')}
+            value={trimleading(this.state.international.second)}
+            onUpdate={this.updateInternationalSecond}
+            onError={this.handleErrorInternationalSecond}
+            tabBack={() => {
+              this.props.tab(this.refs.int_first.refs.text.refs.input)
+            }}
+            tabNext={() => {
+              this.props.tab(this.refs.int_extension.refs.text.refs.input)
+            }}
+          />
+          <span className="separator pound">#</span>
+          <Text
+            name="int_extension"
+            ref="int_extension"
+            className="number six"
+            label={i18n.t('telephone.international.extension.label')}
+            ariaLabel={i18n.t('telephone.aria.extension')}
+            disabled={this.props.noNumber}
+            maxlength="10"
+            pattern="^\d{0,10}$"
+            prefilter={digitsOnly}
+            readonly={this.props.readonly}
+            required={false}
+            value={this.props.extension}
+            onUpdate={this.updateExtension}
+            onError={this.handleErrorInternationalExtension}
+            tabBack={() => {
+              this.props.tab(this.refs.int_second.refs.text.refs.input)
+            }}
+          />
+        </div>
+        <span className="phone-na">
+          <span
+            className={
+              this.props.allowNotApplicable ? 'separator extension' : 'hidden'
+            }>
+            or
+          </span>
+          <Checkbox
+            name="nonumber"
+            className={this.props.allowNotApplicable ? 'nonumber' : 'hidden'}
+            label={i18n.t('telephone.noNumber.label')}
+            value="NA"
+            checked={this.props.noNumber}
+            onUpdate={this.updateNoNumber}
+            onError={this.handleErrorNoNumber}
+          />
         </span>
-        <Checkbox
-          name="nonumber"
-          className={this.props.allowNotApplicable ? 'nonumber' : 'hidden'}
-          label={i18n.t('telephone.noNumber.label')}
-          value="NA"
-          checked={this.props.noNumber}
-          onUpdate={this.updateNoNumber}
-          onError={this.handleErrorNoNumber}
-        />
       </div>
     )
   }
@@ -734,55 +742,17 @@ export default class Telephone extends ValidationElement {
 
         <Show when={phoneType === 'International'}>{this.international()}</Show>
 
-        <div className="timeofday">
-          <RadioGroup
-            selectedValue={this.props.timeOfDay}
-            name="timeofday"
-            disabled={this.props.noNumber}>
-            <Radio
-              native={true}
-              className="time day"
-              label={i18n.t('telephone.timeOfDay.day')}
-              value="Day"
-              ariaLabel={i18n.t('telephone.aria.day')}
-              disabled={this.props.noNumber}
-              onUpdate={this.updateTimeOfDay}
-              onError={this.handleErrorTime}
-            />
-            <Radio
-              native={true}
-              className="time night"
-              label={i18n.t('telephone.timeOfDay.night')}
-              value="Night"
-              ariaLabel={i18n.t('telephone.aria.night')}
-              disabled={this.props.noNumber}
-              onUpdate={this.updateTimeOfDay}
-              onError={this.handleErrorTime}
-            />
-            <Radio
-              native={true}
-              className="time both"
-              label={i18n.t('telephone.timeOfDay.both')}
-              value="Both"
-              ariaLabel={i18n.t('telephone.aria.both')}
-              disabled={this.props.noNumber}
-              onUpdate={this.updateTimeOfDay}
-              onError={this.handleErrorTime}
-            />
-          </RadioGroup>
-        </div>
-
         <Show when={this.props.showNumberType}>
           <div
             className={`phonetype ${
               this.props.noNumber ? 'disabled' : ''
             }`.trim()}>
             <label>{i18n.t('telephone.numberType.title')}</label>
-            <RadioGroup
+            <select
               selectedValue={this.props.numberType}
               required={this.required()}
               disabled={this.props.noNumber}>
-              <Radio
+              <option
                 name="numbertype-cell"
                 className="phonetype-option cell"
                 label={i18n.t('telephone.numberType.cell')}
@@ -792,7 +762,7 @@ export default class Telephone extends ValidationElement {
                 onUpdate={this.updateNumberType}
                 onError={this.handleErrorNumberType}
               />
-              <Radio
+              <option
                 name="numbertype-home"
                 className="phonetype-option home"
                 label={i18n.t('telephone.numberType.home')}
@@ -802,7 +772,7 @@ export default class Telephone extends ValidationElement {
                 onUpdate={this.updateNumberType}
                 onError={this.handleErrorNumberType}
               />
-              <Radio
+              <option
                 name="numbertype-work"
                 className="phonetype-option work"
                 label={i18n.t('telephone.numberType.work')}
@@ -812,9 +782,42 @@ export default class Telephone extends ValidationElement {
                 onUpdate={this.updateNumberType}
                 onError={this.handleErrorNumberType}
               />
-            </RadioGroup>
+            </select>
           </div>
         </Show>
+
+        <div className="timeofday">
+          <label>Best time to call</label>
+          <RadioGroup
+            selectedValue={this.props.timeOfDay}
+            name="timeofday"
+            disabled={this.props.noNumber}>
+            <Radio
+              label={i18n.t('telephone.timeOfDay.day')}
+              value="Day"
+              ariaLabel={i18n.t('telephone.aria.day')}
+              disabled={this.props.noNumber}
+              onUpdate={this.updateTimeOfDay}
+              onError={this.handleErrorTime}
+            />
+            <Radio
+              label={i18n.t('telephone.timeOfDay.night')}
+              value="Night"
+              ariaLabel={i18n.t('telephone.aria.night')}
+              disabled={this.props.noNumber}
+              onUpdate={this.updateTimeOfDay}
+              onError={this.handleErrorTime}
+            />
+            <Radio
+              label={i18n.t('telephone.timeOfDay.both')}
+              value="Both"
+              ariaLabel={i18n.t('telephone.aria.both')}
+              disabled={this.props.noNumber}
+              onUpdate={this.updateTimeOfDay}
+              onError={this.handleErrorTime}
+            />
+          </RadioGroup>
+        </div>
       </div>
     )
   }
