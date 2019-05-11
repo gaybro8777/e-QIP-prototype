@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { validatePassport } from 'validators/passport'
 import NameValidator from './name'
 import LocationValidator from './location'
 import { validGenericTextfield, validDateField } from './helpers'
@@ -121,18 +122,22 @@ export const isDocumentationPartial = ({
 }
 
 export const validateForeignBorn = (data) => {
-  const { citizenshipStatus } = data
-  if (citizenshipStatus !== 'ForeignBorn') {
-    return true
+  const { citizenshipStatus, usPassport } = data
+
+  if (citizenshipStatus === 'ForeignBorn' && validatePassport(usPassport)) {
+    return validateBornOnMilitaryInstallation(data)
   }
 
-  return (
-    (
-      (!isCertificatePartial(data) && validateDocumentation(data))
-      || (!isDocumentationPartial(data) && validateCertificate(data))
+  if (citizenshipStatus === 'ForeignBorn') {
+    return (
+      (
+        (!isCertificatePartial(data) && validateDocumentation(data))
+        || (!isDocumentationPartial(data) && validateCertificate(data))
+      )
+      && validateBornOnMilitaryInstallation(data)
     )
-    && validateBornOnMilitaryInstallation(data)
-  )
+  }
+  return true
 }
 
 export const isCertificateRequired = data => (
@@ -142,34 +147,36 @@ export const isCertificateRequired = data => (
 export const isDocumentRequired = data => isDocumentationPartial(data) || !validateCertificate(data)
 
 export default class CitizenshipValidator {
-  constructor(data = {}) {
-    this.citizenshipStatus = (data.CitizenshipStatus || {}).value
-    this.abroadDocumentation = (data.AbroadDocumentation || {}).value
-    this.explanation = data.Explanation || {}
-    this.documentNumber = data.DocumentNumber || {}
-    this.documentIssued = data.DocumentIssued
-    this.documentName = data.DocumentName
-    this.documentExpiration = data.DocumentExpiration
-    this.documentType = (data.DocumentType || {}).value
-    this.placeIssued = data.PlaceIssued
-    this.certificateNumber = data.CertificateNumber || {}
-    this.certificateIssued = data.CertificateIssued
-    this.certificateName = data.CertificateName
-    this.certificateCourtName = data.CertificateCourtName || {}
-    this.certificateCourtAddress = data.CertificateCourtAddress
+  constructor(data = { Status: {}, Passport: {} }) {
+    const citizenshipData = data.Status
+    this.citizenshipStatus = (citizenshipData.CitizenshipStatus || {}).value
+    this.abroadDocumentation = (citizenshipData.AbroadDocumentation || {}).value
+    this.explanation = citizenshipData.Explanation || {}
+    this.documentNumber = citizenshipData.DocumentNumber || {}
+    this.documentIssued = citizenshipData.DocumentIssued
+    this.documentName = citizenshipData.DocumentName
+    this.documentExpiration = citizenshipData.DocumentExpiration
+    this.documentType = (citizenshipData.DocumentType || {}).value
+    this.placeIssued = citizenshipData.PlaceIssued
+    this.certificateNumber = citizenshipData.CertificateNumber || {}
+    this.certificateIssued = citizenshipData.CertificateIssued
+    this.certificateName = citizenshipData.CertificateName
+    this.certificateCourtName = citizenshipData.CertificateCourtName || {}
+    this.certificateCourtAddress = citizenshipData.CertificateCourtAddress
     this.bornOnMilitaryInstallation = (
-      data.BornOnMilitaryInstallation || {}
+      citizenshipData.BornOnMilitaryInstallation || {}
     ).value
-    this.militaryBase = data.MilitaryBase || {}
-    this.entryDate = data.EntryDate
-    this.entryLocation = data.EntryLocation
-    this.priorCitizenship = (data.PriorCitizenship || {}).value
-    this.hasAlienRegistration = (data.HasAlienRegistration || {}).value
-    this.alienRegistrationNumber = data.AlienRegistrationNumber || {}
-    this.alienRegistrationExpiration = data.AlienRegistrationExpiration
-    this.basis = (data.Basis || {}).value
-    this.permanentResidentCardNumber = data.PermanentResidentCardNumber || {}
-    this.residenceStatus = data.ResidenceStatus
+    this.militaryBase = citizenshipData.MilitaryBase || {}
+    this.entryDate = citizenshipData.EntryDate
+    this.entryLocation = citizenshipData.EntryLocation
+    this.priorCitizenship = (citizenshipData.PriorCitizenship || {}).value
+    this.hasAlienRegistration = (citizenshipData.HasAlienRegistration || {}).value
+    this.alienRegistrationNumber = citizenshipData.AlienRegistrationNumber || {}
+    this.alienRegistrationExpiration = citizenshipData.AlienRegistrationExpiration
+    this.basis = (citizenshipData.Basis || {}).value
+    this.permanentResidentCardNumber = citizenshipData.PermanentResidentCardNumber || {}
+    this.residenceStatus = citizenshipData.ResidenceStatus
+    this.usPassport = data.Passport
   }
 
   validCitizenshipStatus() {
