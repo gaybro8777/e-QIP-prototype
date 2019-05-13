@@ -75,7 +75,7 @@ const validateDates = (hasPassports, issuedDate, expirationDate) => {
 
 export const validatePassport = (data = {}) => {
   const {
-    Name, Number, Issued, Expiration, HasPassports,
+    Name, Number, Issued, Expiration, HasPassports = {},
   } = data
 
   const hasPassports = HasPassports.value

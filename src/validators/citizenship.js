@@ -148,7 +148,7 @@ export const isDocumentRequired = data => isDocumentationPartial(data) || !valid
 
 export default class CitizenshipValidator {
   constructor(data = { Status: {}, Passport: {} }) {
-    const citizenshipData = data.Status
+    const citizenshipData = data.Status || {}
     this.citizenshipStatus = (citizenshipData.CitizenshipStatus || {}).value
     this.abroadDocumentation = (citizenshipData.AbroadDocumentation || {}).value
     this.explanation = citizenshipData.Explanation || {}
