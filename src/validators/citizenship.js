@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { validatePassport } from 'validators/passport'
+import { validateHasPassport, validatePassport } from 'validators/passport'
 import NameValidator from './name'
 import LocationValidator from './location'
 import { validGenericTextfield, validDateField } from './helpers'
@@ -124,7 +124,9 @@ export const isDocumentationPartial = ({
 export const validateForeignBorn = (data) => {
   const { citizenshipStatus, usPassport } = data
 
-  if (citizenshipStatus === 'ForeignBorn' && validatePassport(usPassport)) {
+  if (citizenshipStatus === 'ForeignBorn'
+    && validateHasPassport(usPassport.HasPassports.value)
+    && validatePassport(usPassport)) {
     return validateBornOnMilitaryInstallation(data)
   }
 

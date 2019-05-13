@@ -8,7 +8,12 @@ const reBook = '^[a-zA-Z0-9]{9}$'
  * This is for U.S. Passports
  */
 
-const validatePassportPresence = (hasPassports) => {
+
+/**
+ * This validates whether the yes/no branch has been filled
+ *
+ */
+const validateHasPassportBranch = (hasPassports) => {
   if (!hasPassports) {
     return false
   }
@@ -18,6 +23,17 @@ const validatePassportPresence = (hasPassports) => {
   }
 
   return true
+}
+
+/**
+ * This validates if the hasPassport branch was answered "yes"
+ *
+ */
+export const validateHasPassport = (hasPassports) => {
+  if (hasPassports === 'Yes') {
+    return true
+  }
+  return false
 }
 
 
@@ -75,13 +91,13 @@ const validateDates = (hasPassports, issuedDate, expirationDate) => {
 
 export const validatePassport = (data = {}) => {
   const {
-    Name, Number, Issued, Expiration, HasPassports = {},
+    Name, Number, Issued, Expiration, HasPassports,
   } = data
 
   const hasPassports = HasPassports.value
 
   return (
-    validatePassportPresence(hasPassports)
+    validateHasPassportBranch(hasPassports)
     && validateName(hasPassports, Name)
     && validatePassportNumber(hasPassports, Number, Issued)
     && validateDates(hasPassports, Issued, Expiration)
@@ -103,7 +119,7 @@ export default class PassportValidator {
   }
 
   validHasPassports() {
-    return validatePassportPresence(this.hasPassports)
+    return validateHasPassportBranch(this.hasPassports)
   }
 
   validName() {

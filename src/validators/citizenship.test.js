@@ -1083,6 +1083,7 @@ describe('citizenship component validation', () => {
         },
         bornOnMilitaryInstallation: '',
         militaryBase: {},
+        usPassport: { HasPassports: { value: 'No' } },
       }
 
       expect(validateForeignBorn(data)).toBe(false)
@@ -1101,6 +1102,7 @@ describe('citizenship component validation', () => {
         certificateName: { },
         bornOnMilitaryInstallation: 'Yes',
         militaryBase: { value: 'Avengers Flying Aircraft Carrier' },
+        usPassport: { HasPassports: { value: 'No' } },
       }
 
       expect(validateForeignBorn(data)).toBe(false)
@@ -1140,6 +1142,7 @@ describe('citizenship component validation', () => {
         certificateName: { },
         bornOnMilitaryInstallation: 'Yes',
         militaryBase: { value: 'Avengers Flying Aircraft Carrier' },
+        usPassport: { HasPassports: { value: 'No' } },
       }
 
       expect(validateForeignBorn(data)).toBe(true)
@@ -1172,6 +1175,7 @@ describe('citizenship component validation', () => {
         },
         bornOnMilitaryInstallation: 'Yes',
         militaryBase: { value: 'Avengers Flying Aircraft Carrier' },
+        usPassport: { HasPassports: { value: 'No' } },
       }
 
       expect(validateForeignBorn(data)).toBe(true)
@@ -1204,6 +1208,7 @@ describe('citizenship component validation', () => {
         },
         bornOnMilitaryInstallation: 'Yes',
         militaryBase: { value: 'Avengers Flying Aircraft Carrier' },
+        usPassport: { HasPassports: { value: 'No' } },
       }
 
       expect(validateForeignBorn(data)).toBe(false)
@@ -1251,6 +1256,9 @@ describe('citizenship component validation', () => {
         },
         bornOnMilitaryInstallation: 'Yes',
         militaryBase: { value: 'Avengers Flying Aircraft Carrier' },
+        usPassport: {
+          HasPassports: { value: 'No' },
+        },
       }
 
       expect(validateForeignBorn(data)).toBe(false)
@@ -1304,6 +1312,9 @@ describe('citizenship component validation', () => {
         },
         bornOnMilitaryInstallation: 'Yes',
         militaryBase: { value: 'Avengers Flying Aircraft Carrier' },
+        usPassport: {
+          HasPassports: { value: 'No' },
+        },
       }
 
       expect(validateForeignBorn(data)).toBe(true)
@@ -1317,6 +1328,9 @@ describe('citizenship component validation', () => {
           Status: {
             AbroadDocumentation: { value: '' },
           },
+          Passport: {
+            HasPassports: { value: '' },
+          },
         },
         expected: false,
       },
@@ -1324,6 +1338,9 @@ describe('citizenship component validation', () => {
         data: {
           Status: {
             AbroadDocumentation: { value: 'Yuppers' },
+          },
+          Passport: {
+            HasPassports: { value: 'No' },
           },
         },
         expected: false,
@@ -1333,6 +1350,9 @@ describe('citizenship component validation', () => {
           Status: {
             AbroadDocumentation: { value: 'FS-240' },
           },
+          Passport: {
+            HasPassports: { value: 'No' },
+          },
         },
         expected: true,
       },
@@ -1341,6 +1361,9 @@ describe('citizenship component validation', () => {
           Status: {
             AbroadDocumentation: { value: 'Other' },
             Explanation: null,
+          },
+          Passport: {
+            HasPassports: { value: 'No' },
           },
         },
         expected: false,
@@ -1352,6 +1375,9 @@ describe('citizenship component validation', () => {
             Explanation: {
               value: 'Explanation',
             },
+          },
+          Passport: {
+            HasPassports: { value: 'No' },
           },
         },
         expected: true,
@@ -1426,7 +1452,7 @@ describe('citizenship component validation', () => {
         data: {
           Status: {
             HasAlienRegistration: { value: '' },
-          }
+          },
         },
         expected: false,
       },
@@ -1584,6 +1610,9 @@ describe('citizenship component validation', () => {
           Status: {
             CitizenshipStatus: { value: 'Citizen' },
           },
+          Passport: {
+            HasPassports: { value: 'Yes' },
+          },
         },
         expected: true,
       },
@@ -1620,6 +1649,9 @@ describe('citizenship component validation', () => {
             },
             BornOnMilitaryInstallation: { value: 'No' },
           },
+          Passport: {
+            HasPassports: { value: 'No' },
+          },
         },
         expected: true,
       },
@@ -1649,13 +1681,15 @@ describe('citizenship component validation', () => {
               value: 'Camp Pendleton',
             },
           },
+          Passport: {
+            HasPassports: { value: 'No' },
+          },
         },
         expected: true,
       },
       {
         data: {
           Status: {
-
             CitizenshipStatus: { value: 'Naturalized' },
             EntryDate: {
               day: '1',
@@ -1708,6 +1742,9 @@ describe('citizenship component validation', () => {
               value: 'Explanation',
             },
           },
+          Passport: {
+            HasPassports: { value: 'No' },
+          },
         },
         expected: true,
       },
@@ -1742,6 +1779,9 @@ describe('citizenship component validation', () => {
             Explanation: {
               value: 'Explanation',
             },
+          },
+          Passport: {
+            HasPassports: { value: 'No' },
           },
         },
         expected: false,
@@ -1778,6 +1818,9 @@ describe('citizenship component validation', () => {
               value: 'Explanation',
             },
           },
+          Passport: {
+            HasPassports: { value: 'No' },
+          },
         },
         expected: true,
       },
@@ -1812,6 +1855,9 @@ describe('citizenship component validation', () => {
             Explanation: {
               value: 'Explanation',
             },
+          },
+          Passport: {
+            HasPassports: { value: 'No' },
           },
         },
         expected: true,
@@ -1848,6 +1894,9 @@ describe('citizenship component validation', () => {
               value: 'Explanation',
             },
           },
+          Passport: {
+            HasPassports: { value: 'No' },
+          },
         },
         expected: true,
       },
@@ -1882,6 +1931,9 @@ describe('citizenship component validation', () => {
             Explanation: {
               value: 'Explanation',
             },
+          },
+          Passport: {
+            HasPassports: { value: 'No' },
           },
         },
         expected: true,
@@ -1941,6 +1993,9 @@ describe('citizenship component validation', () => {
               month: '1',
               year: '2016',
             },
+          },
+          Passport: {
+            HasPassports: { value: 'No' },
           },
         },
         expected: true,
