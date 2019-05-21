@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { validateHasPassport, validatePassport } from 'validators/passport'
+import store from 'services/store'
 import NameValidator from './name'
 import LocationValidator from './location'
 import { validGenericTextfield, validDateField } from './helpers'
@@ -123,7 +124,6 @@ export const isDocumentationPartial = ({
 
 export const validateForeignBorn = (data) => {
   const { citizenshipStatus, usPassport } = data
-
   if (citizenshipStatus === 'ForeignBorn'
     && validateHasPassport(usPassport.HasPassports.value)
     && validatePassport(usPassport)) {
@@ -149,8 +149,8 @@ export const isCertificateRequired = data => (
 export const isDocumentRequired = data => isDocumentationPartial(data) || !validateCertificate(data)
 
 export default class CitizenshipValidator {
-  constructor(data = { Status: {}, Passport: {} }) {
-    const citizenshipData = data.Status || {}
+  constructor(data = {}) {
+    const citizenshipData = data || {}
     this.citizenshipStatus = (citizenshipData.CitizenshipStatus || {}).value
     this.abroadDocumentation = (citizenshipData.AbroadDocumentation || {}).value
     this.explanation = citizenshipData.Explanation || {}
@@ -178,7 +178,9 @@ export default class CitizenshipValidator {
     this.basis = (citizenshipData.Basis || {}).value
     this.permanentResidentCardNumber = citizenshipData.PermanentResidentCardNumber || {}
     this.residenceStatus = citizenshipData.ResidenceStatus
-    this.usPassport = data.Passport
+    this.usPassport = (
+      store.getState().application.Foreign.Passport || { HasPassports: { value: '' } }
+    )
   }
 
   validCitizenshipStatus() {
