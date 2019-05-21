@@ -13,7 +13,7 @@ const reBook = '^[a-zA-Z0-9]{9}$'
  * This validates whether the yes/no branch has been filled
  *
  */
-const validateHasPassportBranch = (hasPassports) => {
+export const validateHasPassportBranch = (hasPassports) => {
   if (!hasPassports) {
     return false
   }
@@ -36,20 +36,11 @@ export const validateHasPassport = (hasPassports) => {
   return false
 }
 
+const validateName = name => (
+  new NameValidator(name).isValid()
+)
 
-const validateName = (hasPassports, name) => {
-  if (hasPassports === 'No') {
-    return true
-  }
-
-  return new NameValidator(name).isValid()
-}
-
-const validatePassportNumber = (hasPassports, passportNumber, issuedDate) => {
-  if (hasPassports === 'No') {
-    return true
-  }
-
+export const validatePassportNumber = (passportNumber, issuedDate) => {
   if (!passportNumber || !passportNumber.value) {
     return false
   }
@@ -76,11 +67,7 @@ const validatePassportNumber = (hasPassports, passportNumber, issuedDate) => {
   return true
 }
 
-const validateDates = (hasPassports, issuedDate, expirationDate) => {
-  if (hasPassports === 'No') {
-    return true
-  }
-
+export const validateDates = (issuedDate, expirationDate) => {
   const range = {
     from: issuedDate,
     to: expirationDate,
@@ -91,55 +78,37 @@ const validateDates = (hasPassports, issuedDate, expirationDate) => {
 
 export const validatePassport = (data = {}) => {
   const {
-    Name, Number, Issued, Expiration, HasPassports,
+    Name, Number, Issued, Expiration, HasPassports = {},
   } = data
 
   const hasPassports = HasPassports.value
 
-  return (
-    validateHasPassportBranch(hasPassports)
-    && validateName(hasPassports, Name)
-    && validatePassportNumber(hasPassports, Number, Issued)
-    && validateDates(hasPassports, Issued, Expiration)
-  )
+  const isValid = ((passportPresence) => {
+    switch (passportPresence) {
+      case 'Yes':
+        return (
+          validateName(Name)
+          && validatePassportNumber(Number, Issued)
+          && validateDates(Issued, Expiration)
+        )
+      case 'No':
+        return validateHasPassportBranch(hasPassports)
+      default:
+        return false
+    }
+  })(hasPassports)
+
+  return isValid
 }
 /**
  * legacy validator
  */
 export default class PassportValidator {
   constructor(data = {}) {
-    this.name = data.Name
-    this.number = data.Number
-    this.card = data.Card
-    this.issued = data.Issued
-    this.expiration = data.Expiration
-    this.comments = data.Comments
-    this.hasPassports = (data.HasPassports || {}).value
-    this.card = data.Card
-  }
-
-  validHasPassports() {
-    return validateHasPassportBranch(this.hasPassports)
-  }
-
-  validName() {
-    return validateName(this.hasPassports, this.name)
-  }
-
-  validPassportNumber() {
-    return validatePassportNumber(this.hasPassports, this.number, this.issued)
-  }
-
-  validDates() {
-    return validateDates(this.hasPassports, this.issued, this.expiration)
+    this.data = data
   }
 
   isValid() {
-    return (
-      this.validHasPassports()
-      && this.validName()
-      && this.validPassportNumber()
-      && this.validDates()
-    )
+    return validatePassport(this.data)
   }
 }
